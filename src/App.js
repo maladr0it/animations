@@ -5,6 +5,7 @@ import './App.css';
 
 import { DragDropContext} from 'react-beautiful-dnd';
 
+// moves element from startIndex to endIndex
 const reorder = (list, startIndex, endIndex) => {
   let result = Array.from(list);
   const [removed] = result.splice(startIndex, 1);
@@ -14,14 +15,19 @@ const reorder = (list, startIndex, endIndex) => {
 
 class App extends Component {
   state = {
-    items: [
-      { id: '1', name: 'one' },
-      { id: '2', name: 'two' },
-      { id: '3', name: 'three' },
-      { id: '4', name: 'four' },
-      { id: '5', name: 'five' },
-      { id: '6', name: 'six' },
-    ]
+    lists: {
+      list1: [
+        { id: '1', name: 'one' },
+        { id: '2', name: 'two' },
+        { id: '3', name: 'three' },
+        { id: '4', name: 'four' },
+        { id: '5', name: 'five' }
+      ],
+      list2: [
+        { id: '6', name: 'six' },
+        { id: '7', name: 'seven'}
+      ]
+    }
   };
 
   addItem = (item) => {
@@ -35,17 +41,31 @@ class App extends Component {
     if (!result.destination) {
       return;
     }
-    const items = reorder(
-      this.state.items,
-      result.source.index,
-      result.destination.index
-    );
-    this.setState({ items });
+    const { source, destination } = result;
+    const sourceList = this.state.lists[source.droppableId];
+    const destinationList = this.state.lists[destination.droppableId];
+    // moving within the same list
+    if (source.droppableId == destination.droppableId) {
+      const reOrdered = reorder(
+        sourceList,
+        source.index,
+        destination.index
+      );
+      const lists = {
+        ...this.state.lists,
+        [source.droppableId]: reOrdered
+      }
+      this.setState({ lists });
+    }
+    // moving to a different list
   };
 
   render() {
-    const queueItems = this.state.items.map(item => (
-      <QueueItem key={item.id} id={item.id} title={item.name} color={item.color} />
+    const list1 = this.state.lists.list1.map(item => (
+      <QueueItem key={item.id} id={item.id} title={item.name} />
+    ));
+    const list2 = this.state.lists.list2.map(item => (
+      <QueueItem key={item.id} id={item.id} title={item.name} />
     ));
 
     return (
@@ -54,11 +74,11 @@ class App extends Component {
         onDragEnd={this.onDragEnd}
       >
         <button onClick={() => this.addItem({ id: '55', name: 'SOK' })}>CLICK</button>
-        <Queue id='1'>
-          {queueItems}
+        <Queue id='list1' style={{ display: 'inline' }}>
+          {list1}
         </Queue>
-        <Queue id='2'>
-          <div>hi</div>
+        <Queue id='list2'>
+          {list2}
         </Queue>
       </DragDropContext>
     );

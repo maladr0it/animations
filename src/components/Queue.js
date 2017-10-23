@@ -10,7 +10,6 @@ const Queue = (props) => (
         style={{ backgroundColor: snapshot.isDraggingOver ? 'blue' : 'grey' }}
         className='queue'
       >
-        {/* halo */}
         {props.children}
         {provided.placeholder}
       </div>
