@@ -1,5 +1,13 @@
 .queueItem {
-  /* width: 100px; */
+  text-align: center;
+  /* width: ; */
   height: 100px;
+  color: #99EDCC;
+  background-color: #CB958E;
+  transition: ease 1s;
+  border-radius: 50%;
+}
 
+.queueItem img {
+  /* background: red; */
 }

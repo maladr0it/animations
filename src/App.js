@@ -29,35 +29,40 @@ class App extends Component {
       ]
     }
   };
-
-  addItem = (item) => {
-    const items = this.state.items;
-    items.push(item);
-    this.setState({items});
-  }
   onDragStart = (initial) => {
   };
   onDragEnd = (result) => {
+    // moving to invalid destination
     if (!result.destination) {
       return;
     }
     const { source, destination } = result;
-    const sourceList = this.state.lists[source.droppableId];
-    const destinationList = this.state.lists[destination.droppableId];
+    let sourceList = this.state.lists[source.droppableId];
+    let destinationList = this.state.lists[destination.droppableId];
     // moving within the same list
-    if (source.droppableId == destination.droppableId) {
-      const reOrdered = reorder(
+    if (source.droppableId === destination.droppableId) {
+      sourceList = reorder(
         sourceList,
         source.index,
         destination.index
       );
       const lists = {
         ...this.state.lists,
-        [source.droppableId]: reOrdered
+        [source.droppableId]: sourceList
       }
       this.setState({ lists });
+    } else {
+      // moving to a different list
+      // remove from original, insert into new
+      const [value] = sourceList.splice(source.index, 1);
+      destinationList.splice(destination.index, 0, value);
+      const lists = {
+        ...this.state.lists,
+        [source.droppableId]: sourceList,
+        [destination.droppableId]: destinationList
+      }
+      this.setState({ lists })
     }
-    // moving to a different list
   };
 
   render() {
@@ -72,14 +77,18 @@ class App extends Component {
       <DragDropContext
         onDragStart={this.onDragStart}
         onDragEnd={this.onDragEnd}
+        className='listContainer'
       >
-        <button onClick={() => this.addItem({ id: '55', name: 'SOK' })}>CLICK</button>
-        <Queue id='list1' style={{ display: 'inline' }}>
-          {list1}
-        </Queue>
-        <Queue id='list2'>
-          {list2}
-        </Queue>
+        {this.state.lists.list1.length}
+        {this.state.lists.list2.length}
+        <div className='queueContainer'>
+          <Queue id='list1'>
+            {list1}
+          </Queue>
+          <Queue id='list2'>
+            {list2}
+          </Queue>
+        </div>
       </DragDropContext>
     );
   }
