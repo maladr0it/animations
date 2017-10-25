@@ -9,13 +9,16 @@ const styles = {
   }
 }
 
+// when queue is empty the container isn't formatted
 const Queue = (props) => (
   <Droppable droppableId={props.id} type="PERSON">
     {(provided, snapshot) =>  (
       <div
         ref={provided.innerRef}
-        style={snapshot.isDraggingOver ? styles.draggingOver : {}}
-        className='queue'
+        className={`
+          queue
+          ${snapshot.isDraggingOver ? 'draggingOver' : ''}
+        `}
       >
         {props.children}
         {provided.placeholder}
@@ -25,3 +28,4 @@ const Queue = (props) => (
 );
 
 export default Queue;
+/* style={snapshot.isDraggingOver ? styles.draggingOver : {}} */

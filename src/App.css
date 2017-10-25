@@ -1,3 +1,23 @@
 .queueContainer {
   display: flex;
 }
+
+.testItem {
+  animation-duration: 2s;
+  animation-name: pulse;
+  animation-iteration-count: infinite;
+  background-color: red;
+
+}
+
+@keyframes pulse {
+  0% {
+    width: 0px;
+  }
+  50% {
+    width: 50px;
+  }
+  100% {
+    width: 100px;
+  }
+}

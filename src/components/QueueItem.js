@@ -3,19 +3,14 @@ import { Draggable } from 'react-beautiful-dnd';
 import './QueueItem.css';
 import pokeApi from '../pokeApi';
 
-const styles = {
-  dragging: {
-    backgroundColor: '#E36588',
-    transition: 'ease 1s'
-  }
-}
 
+// item is sometimes re-rendering
 const ItemContent = (props) => (
   <div
-    style={
-      (props.isDragging) ? styles.dragging : {}
-    }
-    className='queueItem'
+    className={`
+      queueItem
+      ${props.isDragging ? 'dragging' : 'notDragging'}
+    `}
   >
     {props.children}
   </div>
@@ -32,7 +27,8 @@ const QueueItem = (props) => (
             {...provided.dragHandleProps}  
           >
             <ItemContent isDragging={snapshot.isDragging}>
-              <img src={'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/'+props.id+'.png'} />
+              {props.id}
+              {/* <img src={'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/'+props.id+'.png'} /> */}
             </ItemContent>
           </div>
           {provided.placeholder}

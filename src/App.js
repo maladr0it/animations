@@ -7,7 +7,7 @@ import { DragDropContext} from 'react-beautiful-dnd';
 
 // moves element from startIndex to endIndex
 const reorder = (list, startIndex, endIndex) => {
-  let result = Array.from(list);
+  let result = list;
   const [removed] = result.splice(startIndex, 1);
   result.splice(endIndex, 0, removed);
   return result;
@@ -17,20 +17,26 @@ class App extends Component {
   state = {
     lists: {
       list1: [
-        { id: '1', name: 'one' },
-        { id: '2', name: 'two' },
-        { id: '3', name: 'three' },
-        { id: '4', name: 'four' },
-        { id: '5', name: 'five' }
+        { id: 'one' },
+        { id: 'two' },
+        { id: 'three' },
+        { id: 'four' },
+        { id: 'five' }
       ],
       list2: [
-        { id: '6', name: 'six' },
-        { id: '7', name: 'seven'}
+        { id: 'six' },
+        { id: 'seven' }
       ]
-    }
+    },
   };
+  // !here put a bunch of pokemon into 5 or so lists
+  componentWillMount = () => {
+    // this.state.rng = Array.from(Array(151), (v, i) => i + 1)
+    // .sort(() => Math.random() - 0.5)
+  }
   onDragStart = (initial) => {
   };
+  // try to not destroy/create object in order to persist css
   onDragEnd = (result) => {
     // moving to invalid destination
     if (!result.destination) {
@@ -67,10 +73,10 @@ class App extends Component {
 
   render() {
     const list1 = this.state.lists.list1.map(item => (
-      <QueueItem key={item.id} id={item.id} title={item.name} />
+      <QueueItem key={item.id} id={item.id} />
     ));
     const list2 = this.state.lists.list2.map(item => (
-      <QueueItem key={item.id} id={item.id} title={item.name} />
+      <QueueItem key={item.id} id={item.id} />
     ));
 
     return (
