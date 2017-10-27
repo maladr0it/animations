@@ -14,7 +14,7 @@ const ItemContent = (props) => (
   >
     {props.children}
   </div>
-)
+);
 
 const QueueItem = (props) => (
   <Draggable draggableId={props.id} type="PERSON">
@@ -22,19 +22,19 @@ const QueueItem = (props) => (
       return (
         <div>
           <div
+            className='provided'
             ref={provided.innerRef}
             style={provided.draggableStyle}
             {...provided.dragHandleProps}  
           >
             <ItemContent isDragging={snapshot.isDragging}>
-              {props.id}
-              {/* <img src={'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/'+props.id+'.png'} /> */}
+              <img src={'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/'+props.id+'.png'} />
             </ItemContent>
           </div>
           {provided.placeholder}
       </div>
     );
-  }}  
+  }}
   </Draggable>
 );
 export default QueueItem;

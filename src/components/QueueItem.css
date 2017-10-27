@@ -1,21 +1,17 @@
 .queueItem {
   text-align: center;
-  width: 150px;
-  height: 100px;
-  color: #99EDCC;
-  /* border-radius: 50%; */
+  width: 120px;
+  /* height: 100px; */
+  border: 2px solid black;
 }
 
 .dragging {
-  background-color: #E36588;
-  transition: ease 5s;
+  background-color: #FFFFFF;
 }
 
 .notDragging {
-  background-color: orange;
-  transition: ease 5s;
+  background-color: #56CBF9;
 }
 
 .queueItem img {
-  /* background: red; */
 }

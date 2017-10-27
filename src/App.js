@@ -15,24 +15,25 @@ const reorder = (list, startIndex, endIndex) => {
 
 class App extends Component {
   state = {
+    rng: [],
     lists: {
-      list1: [
-        { id: 'one' },
-        { id: 'two' },
-        { id: 'three' },
-        { id: 'four' },
-        { id: 'five' }
-      ],
-      list2: [
-        { id: 'six' },
-        { id: 'seven' }
-      ]
-    },
-  };
-  // !here put a bunch of pokemon into 5 or so lists
+      list1: [], list2: [], list3: [], list4: [], list5: []
+    }
+  }
   componentWillMount = () => {
-    // this.state.rng = Array.from(Array(151), (v, i) => i + 1)
-    // .sort(() => Math.random() - 0.5)
+    let rng = Array.from(Array(151), (v, i) => i + 1)
+    .sort(() => Math.random() - 0.5);
+
+    // this is ugly
+    let lists = this.state.lists;
+    Object.keys(lists).forEach(listId => {
+      lists[listId] = rng.splice(0, 6).map(num => (
+        {
+          id: num,
+          size: Math.floor(Math.random()*3) + 1
+        }
+      ))
+    });
   }
   onDragStart = (initial) => {
   };
@@ -72,11 +73,12 @@ class App extends Component {
   };
 
   render() {
-    const list1 = this.state.lists.list1.map(item => (
-      <QueueItem key={item.id} id={item.id} />
-    ));
-    const list2 = this.state.lists.list2.map(item => (
-      <QueueItem key={item.id} id={item.id} />
+    const lists = Object.keys(this.state.lists).map(listId => (
+      <Queue key={listId} id={listId}>
+        {this.state.lists[listId].map(item => (
+          <QueueItem key={item.id} {...item} />
+        ))}
+      </Queue>
     ));
 
     return (
@@ -85,19 +87,11 @@ class App extends Component {
         onDragEnd={this.onDragEnd}
         className='listContainer'
       >
-        {this.state.lists.list1.length}
-        {this.state.lists.list2.length}
         <div className='queueContainer'>
-          <Queue id='list1'>
-            {list1}
-          </Queue>
-          <Queue id='list2'>
-            {list2}
-          </Queue>
+          {lists}
         </div>
       </DragDropContext>
     );
   }
 }
-
 export default App;
